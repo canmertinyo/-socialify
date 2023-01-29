@@ -1,18 +1,10 @@
-import express, { Request, Response } from 'express'
-
 import { config } from './config'
-import { connectToDatabase } from './database'
+import { App } from './app'
 
-connectToDatabase()
+function bootstrap(): void {
+  const app = new App()
 
-const app = express()
+  app.listen(config.PORT)
+}
 
-app.use(express.json())
-
-app.get('/', (req: Request, res: Response) => {
-  res.json({
-    message: 'Just created a temporary block.'
-  })
-})
-
-app.listen(config.PORT)
+bootstrap()

@@ -5,7 +5,7 @@ dotenv.config()
 
 const configObject = {
   DATABASE_URI: url(),
-  NODE_ENV: str({ default: 'DEV', choices: ['DEV', 'PROD'] }),
+  NODE_ENV: str({ default: 'DEVELOPMENT', choices: ['DEVELOPMENT', 'PRODUCTION'] }),
   PORT: port({ default: 3001 })
 }
 
