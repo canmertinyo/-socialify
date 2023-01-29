@@ -1,9 +1,14 @@
 import dotenv from 'dotenv'
+import { cleanEnv, url, str, port } from 'envalid'
 
 dotenv.config()
 
-export const config = {
-  DATABASE_URI: String(process.env.DATABASE_URI),
-  NODE_ENV: process.env.NODE_ENV || 'DEV',
-  PORT: Number(process.env.PORT) || 3001
+const configObject = {
+  DATABASE_URI: url(),
+  NODE_ENV: str({ default: 'DEV', choices: ['DEV', 'PROD'] }),
+  PORT: port({ default: 3001 })
 }
+
+type Config = { [Key in keyof typeof configObject]: any }
+
+export const config: Config = cleanEnv(process.env, configObject)
