@@ -1,5 +1,8 @@
 import express, { Application } from 'express'
 import { set, connect } from 'mongoose'
+import helmet from 'helmet'
+import morgan from 'morgan'
+import compression from 'compression'
 
 import { config } from './config'
 import { AppOptions } from './interfaces'
@@ -36,6 +39,9 @@ export class App {
 
   private initializeMiddlewares(): void {
     this.app.use(express.json())
+    this.app.use(helmet())
+    this.app.use(compression())
+    this.app.use(morgan('tiny'))
   }
 
   private async initializeControllers(): Promise<void> {
