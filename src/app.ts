@@ -1,3 +1,4 @@
+import 'express-async-errors'
 import express, { Application } from 'express'
 import { set, connect } from 'mongoose'
 import helmet from 'helmet'
@@ -8,6 +9,7 @@ import compression from 'compression'
 import { config } from './config'
 import { AppOptions } from './interfaces'
 import { loadControllersBySuffix } from './utils'
+import { errorHandler } from './middlewares'
 
 export class App {
   private app: Application
@@ -20,6 +22,7 @@ export class App {
     this.connectToDatabase()
     this.initializeMiddlewares()
     await this.initializeControllers()
+    this.initializeErrorHandler()
   }
 
   public getServer(): Application {
@@ -56,5 +59,9 @@ export class App {
         : `/${controller.name}`
       this.app.use(controllerPath, controller.router)
     })
+  }
+
+  private initializeErrorHandler(): void {
+    this.app.use(errorHandler)
   }
 }
