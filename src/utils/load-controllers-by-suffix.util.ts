@@ -13,7 +13,7 @@ export async function loadControllersBySuffix(suffix: string): Promise<Controlle
       const exports = await import(file)
 
       Object.values(exports).forEach((exportedClass: any) => {
-        if (!(exportedClass instanceof Controller)) return
+        if (!exportedClass.constructor) return
 
         const controllerInstance = Container.resolve(exportedClass as unknown as Type)
 
