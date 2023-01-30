@@ -1,13 +1,13 @@
-import { Container } from 'magnodi'
-
 import { config } from './config'
 import { App } from './app'
-import { UserController } from './features/user'
 
-function bootstrap(): void {
-  const userController = Container.resolve<UserController>(UserController)
+async function bootstrap(): Promise<void> {
+  const app = new App({
+    controllerSuffix: '*.controller.ts',
+    globalPrefix: 'api'
+  })
 
-  const app = new App([userController], config.GLOBAL_PREFIX)
+  await app.initialize()
 
   app.listen(config.PORT)
 }

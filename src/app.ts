@@ -2,17 +2,20 @@ import express, { Application } from 'express'
 import { set, connect } from 'mongoose'
 
 import { config } from './config'
-import { Controller } from './interfaces'
+import { AppOptions } from './interfaces'
+import { loadControllersBySuffix } from './utils'
 
 export class App {
   private app: Application
 
-  constructor(private controllers: Controller[], private globalPrefix?: string) {
+  constructor(private options: AppOptions) {
     this.app = express()
+  }
 
+  public async initialize(): Promise<void> {
     this.connectToDatabase()
     this.initializeMiddlewares()
-    this.initializeControllers(this.controllers)
+    await this.initializeControllers()
   }
 
   public getServer(): Application {
@@ -35,10 +38,12 @@ export class App {
     this.app.use(express.json())
   }
 
-  private initializeControllers(controllers: Controller[]): void {
+  private async initializeControllers(): Promise<void> {
+    const controllers = await loadControllersBySuffix(this.options.controllerSuffix)
+
     controllers.forEach((controller) => {
-      const controllerPath = this.globalPrefix
-        ? `/${this.globalPrefix}/${controller.name}`
+      const controllerPath = this.options.globalPrefix
+        ? `/${this.options.globalPrefix}/${controller.name}`
         : `/${controller.name}`
       this.app.use(controllerPath, controller.router)
     })
