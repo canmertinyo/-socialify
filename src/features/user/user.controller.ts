@@ -2,16 +2,18 @@ import { Injectable } from 'magnodi'
 import { Request, Response } from 'express'
 
 import { Controller } from '../../interfaces'
+import { UserService } from './user.service'
 
 @Injectable()
 export class UserController extends Controller {
-  constructor() {
+  constructor(private readonly userService: UserService) {
     super('users')
 
-    this.router.use('/', this.index.bind(this))
+    this.router.get('/', this.index.bind(this))
   }
 
   public index(req: Request, res: Response): void {
-    res.send('Hello from user controller!')
+    const users = this.userService.getUsers()
+    res.json(users)
   }
 }
