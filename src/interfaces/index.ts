@@ -1,4 +1,4 @@
 export * from './controller.interface'
 export * from './type.interface'
 export * from './app-options.interface'
-export * from './user.interface'
+export * from '../features/user/interfaces/user.interface'

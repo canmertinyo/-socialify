@@ -22,7 +22,7 @@ export class App {
     this.connectToDatabase()
     this.initializeMiddlewares()
     await this.initializeControllers()
-    this.initializeErrorHandler()
+    // this.initializeErrorHandler() kapattım şimdilik hata verdiriyor :D
   }
 
   public getServer(): Application {

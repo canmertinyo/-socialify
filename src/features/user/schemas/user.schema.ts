@@ -1,20 +1,42 @@
-import { Prop, Schema, SchemaFactory, Model } from 'mondec'
+/* eslint-disable no-useless-escape */
+import bcrypt from 'bcrypt'
+import mongoose, { Schema } from 'mongoose'
 
-@Schema({
-  versionKey: false
+import { config } from '../../../config/index'
+import { IUser } from '../interfaces'
+
+const User = new Schema<IUser>({
+  name: { type: String, required: true },
+  isMailConfirmed: { type: Boolean, default: false, required: false },
+  email: {
+    type: String,
+    match: [
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'No mikey nooo that was so not right'
+    ],
+    required: [true, 'Please enter Email Address'],
+    unique: true,
+    lowercase: true
+  },
+  avatar: { type: String, default: 'profile.jpg', required: true },
+  password: { type: String, required: true }
 })
-class User extends Model {
-  @Prop({ type: String, required: true })
-  public name!: string
 
-  @Prop({ type: String, required: true })
-  public password!: string
+User.pre('save', function (next: any) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this
+  if (!user.isModified('password')) return next()
 
-  @Prop({ type: String, required: true, unique: true })
-  public email!: string
+  bcrypt.genSalt(config.SALT_WORK_FACTOR, function (err: any, salt: any) {
+    if (err) return next(err)
 
-  @Prop({ type: String, default: 'profile.jpg', required: false })
-  public avatar!: string
-}
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) return next(err)
+      // override the cleartext password with the hashed one
+      user.password = hash
+      next()
+    })
+  })
+})
 
-export const UserSchema = SchemaFactory.createForClass('users', User)
+export const UserSchema = mongoose.model('user', User)
