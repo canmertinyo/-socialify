@@ -29,8 +29,8 @@ export class App {
     return this.app
   }
 
-  public listen(port: number): void {
-    this.app.listen(port)
+  public listen(port: number, hostName: string): void {
+    this.app.listen(port, hostName)
   }
 
   private connectToDatabase(): void {
@@ -44,15 +44,25 @@ export class App {
   private initializeMiddlewares(): void {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
-    this.app.use(cors())
+    this.app.use(
+      cors({
+        methods: ['GET', 'POST', 'PUT', 'DELETE']
+      })
+    )
     this.app.use(helmet())
-    this.app.use(compression())
+    this.app.use(
+      compression({
+        level: 6
+      })
+    )
     this.app.use(morgan('tiny'))
   }
 
   private async initializeControllers(): Promise<void> {
+    //??
     const controllers = await loadControllersBySuffix(this.options.controllerSuffix)
 
+    //sonu .controller olanları mı alıyor
     controllers.forEach((controller) => {
       const controllerPath = this.options.globalPrefix
         ? `/${this.options.globalPrefix}/${controller.name}`

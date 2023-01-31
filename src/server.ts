@@ -9,7 +9,7 @@ async function bootstrap(): Promise<void> {
 
   await app.initialize()
 
-  app.listen(config.PORT)
+  app.listen(config.PORT, config.HOST_NAME)
 }
 
 bootstrap()
