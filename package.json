@@ -53,6 +53,7 @@
     "helmet": "^6.0.1",
     "http-status": "^1.6.2",
     "magnodi": "^1.1.2",
+    "mondec": "^0.1.1",
     "mongoose": "^6.9.0",
     "morgan": "^1.10.0"
   }
