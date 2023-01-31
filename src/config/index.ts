@@ -7,11 +7,7 @@ const configObject = {
   DATABASE_URI: url(),
   NODE_ENV: str({ default: 'DEVELOPMENT', choices: ['DEVELOPMENT', 'PRODUCTION'] }),
   PORT: port({ default: 5000 }),
-  GLOBAL_PREFIX: str({ default: 'api' }),
-  HOST_NAME: str({ default: 'localhost' })
+  GLOBAL_PREFIX: str({ default: 'api' })
 }
 
-type Config = { [Key in keyof typeof configObject]: any }
-//+
-
-export const config: Config = cleanEnv(process.env, configObject)
+export const config = cleanEnv(process.env, configObject)

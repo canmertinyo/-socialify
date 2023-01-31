@@ -1,9 +1,9 @@
-import { Prop, Schema, SchemaFactory } from 'mondec'
+import { Prop, Schema, SchemaFactory, Model } from 'mondec'
 
 @Schema({
   versionKey: false
 })
-class User {
+class User extends Model {
   @Prop({ type: String, required: true })
   public name!: string
 

@@ -29,8 +29,8 @@ export class App {
     return this.app
   }
 
-  public listen(port: number, hostName: string): void {
-    this.app.listen(port, hostName)
+  public listen(port: number): void {
+    this.app.listen(port)
   }
 
   private connectToDatabase(): void {
@@ -44,17 +44,9 @@ export class App {
   private initializeMiddlewares(): void {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
-    this.app.use(
-      cors({
-        methods: ['GET', 'POST', 'PUT', 'DELETE']
-      })
-    )
+    this.app.use(cors())
     this.app.use(helmet())
-    this.app.use(
-      compression({
-        level: 6
-      })
-    )
+    this.app.use(compression())
     this.app.use(morgan('tiny'))
   }
 

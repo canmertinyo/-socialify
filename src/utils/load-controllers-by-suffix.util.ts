@@ -1,6 +1,5 @@
 import glob from 'glob'
 import { Container } from 'magnodi'
-//?
 
 import { Controller, Type } from '../interfaces'
 

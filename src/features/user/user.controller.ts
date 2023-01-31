@@ -14,6 +14,6 @@ export class UserController extends Controller {
 
   public index(req: Request, res: Response): void {
     const users = this.userService.getUsers()
-    res.status(200).json(users)
+    res.json(users)
   }
 }
