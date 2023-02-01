@@ -1,7 +1,8 @@
 import { Injectable } from 'magnodi'
 import { Request, Response } from 'express'
 
-import { Controller } from '../../common/interfaces/index'
+import { Controller } from '@common/interfaces'
+
 import { AuthService } from './auth.service'
 
 @Injectable()

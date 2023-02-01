@@ -2,6 +2,11 @@
   "include": ["src"],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
+    "paths": {
+      "@common/*": ["src/common/*"],
+      "@config/*": ["src/config/*"],
+      "@features/*": ["src/features/*"]
+    },
     "target": "ES5",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

@@ -1,6 +1,7 @@
 import { Injectable } from 'magnodi'
 
-import { Controller } from '../../common/interfaces'
+import { Controller } from '@common/interfaces'
+
 import { UserService } from './user.service'
 
 @Injectable()

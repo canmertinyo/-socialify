@@ -1,6 +1,6 @@
 import { Injectable } from 'magnodi'
 
-import { UserSchema } from '../user/schemas/index'
+import { UserSchema } from '@features/user'
 
 @Injectable()
 export class AuthService {

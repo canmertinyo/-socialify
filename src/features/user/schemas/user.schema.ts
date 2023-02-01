@@ -32,7 +32,7 @@ class User {
 
 const userSchema = SchemaFactory.createForClass<IUser>(User)
 
-userSchema.pre('save', function (next: any) {
+userSchema.pre('save', function (next) {
   const user = this
 
   if (!user.isModified('password')) return next()
