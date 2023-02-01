@@ -1,10 +1,10 @@
 import { Injectable } from 'magnodi'
 
-import { UserSchema } from '../schemas/index'
+import { UserSchema } from '../user/schemas/index'
 
 @Injectable()
 export class AuthService {
-  public async addUser(): Promise<void> {
+  public async register(): Promise<void> {
     await UserSchema.create({
       name: 'can mert',
       email: 'canmer23tinson@gmail.com',

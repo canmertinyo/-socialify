@@ -1,42 +1,45 @@
-/* eslint-disable no-useless-escape */
 import bcrypt from 'bcrypt'
-import mongoose, { Schema } from 'mongoose'
+import mongoose from 'mongoose'
+import { Schema, Prop, SchemaFactory } from 'mondec'
 
-import { config } from '../../../config/index'
 import { IUser } from '../interfaces'
 
-const User = new Schema<IUser>({
-  name: { type: String, required: true },
-  isMailConfirmed: { type: Boolean, default: false, required: false },
-  email: {
+@Schema({
+  versionKey: false
+})
+class User {
+  @Prop({ type: String, required: true })
+  public name!: string
+
+  @Prop({
     type: String,
-    match: [
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      'No mikey nooo that was so not right'
-    ],
-    required: [true, 'Please enter Email Address'],
+    match: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+    required: true,
     unique: true,
     lowercase: true
-  },
-  avatar: { type: String, default: 'profile.jpg', required: true },
-  password: { type: String, required: true }
-})
+  })
+  public email!: string
 
-User.pre('save', function (next: any) {
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  @Prop({ type: String, required: true })
+  public password!: string
+
+  @Prop({ type: Boolean, default: false })
+  public isMailConfirmed!: boolean
+
+  @Prop({ type: String, default: 'profile.jpg', required: true })
+  public avatar!: string
+}
+
+const userSchema = SchemaFactory.createForClass<IUser>(User)
+
+userSchema.pre('save', function (next: any) {
   const user = this
+
   if (!user.isModified('password')) return next()
 
-  bcrypt.genSalt(config.SALT_WORK_FACTOR, function (err: any, salt: any) {
-    if (err) return next(err)
+  user.password = bcrypt.hashSync(user.password, 10)
 
-    bcrypt.hash(user.password, salt, function (err, hash) {
-      if (err) return next(err)
-      // override the cleartext password with the hashed one
-      user.password = hash
-      next()
-    })
-  })
+  next()
 })
 
-export const UserSchema = mongoose.model('user', User)
+export const UserSchema = mongoose.model('user', userSchema)

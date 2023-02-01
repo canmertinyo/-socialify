@@ -7,9 +7,9 @@ import cors from 'cors'
 import compression from 'compression'
 
 import { config } from './config'
-import { AppOptions } from './interfaces'
-import { loadControllersBySuffix } from './utils'
-import { errorHandler } from './middlewares'
+import { AppOptions } from './common/interfaces'
+import { loadControllersBySuffix } from './common/utils'
+import { errorHandler } from './common/middlewares'
 
 export class App {
   private app: Application
@@ -22,7 +22,7 @@ export class App {
     this.connectToDatabase()
     this.initializeMiddlewares()
     await this.initializeControllers()
-    // this.initializeErrorHandler() kapattım şimdilik hata verdiriyor :D
+    this.initializeErrorHandler()
   }
 
   public getServer(): Application {
@@ -51,10 +51,8 @@ export class App {
   }
 
   private async initializeControllers(): Promise<void> {
-    //??
     const controllers = await loadControllersBySuffix(this.options.controllerSuffix)
 
-    //sonu .controller olanları mı alıyor
     controllers.forEach((controller) => {
       const controllerPath = this.options.globalPrefix
         ? `/${this.options.globalPrefix}/${controller.name}`
