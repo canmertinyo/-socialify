@@ -1,6 +1,6 @@
 import {
-  EnforceDocument,
   FilterQuery,
+  HydratedDocument,
   Model,
   UpdateQuery,
   UpdateWithAggregationPipeline
@@ -11,7 +11,7 @@ import { DeleteResult, FindAllResult, FindResult, UpdateResult } from './interfa
 export class BaseRepository<T> {
   constructor(private readonly model: Model<T>) {}
 
-  public async create(object: T): Promise<EnforceDocument<T, unknown>> {
+  public async create(object: T): Promise<HydratedDocument<T, unknown>> {
     return this.model.create(object)
   }
 
