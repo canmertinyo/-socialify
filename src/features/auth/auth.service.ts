@@ -1,17 +1,14 @@
 import { Injectable } from 'magnodi'
 
 import { UserRepository } from '../user/repositories'
+import { RegisterDTO } from './dto'
+import { IUser } from '../user'
 
 @Injectable()
 export class AuthService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async register(): Promise<void> {
-    await this.userRepository.create({
-      name: 'can mert',
-      email: 'canmer23tinson@gmail.com',
-      password: 'asdasd',
-      avatar: 'default.jpg'
-    })
+  public async register(user: RegisterDTO): Promise<IUser> {
+    return this.userRepository.create(<IUser>user)
   }
 }

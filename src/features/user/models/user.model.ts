@@ -8,8 +8,15 @@ import { IUser } from '../interfaces'
   versionKey: false
 })
 class User {
-  @Prop({ type: String, required: true })
-  public name!: string
+  @Prop({
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 6,
+    maxlength: 20,
+    lowercase: true
+  })
+  public username!: string
 
   @Prop({
     type: String,
@@ -20,13 +27,25 @@ class User {
   })
   public email!: string
 
-  @Prop({ type: String, required: true })
+  @Prop({
+    type: String,
+    required: true,
+    minlength: 6,
+    maxlength: 40
+  })
   public password!: string
 
-  @Prop({ type: Boolean, default: false })
+  @Prop({
+    type: Boolean,
+    default: false
+  })
   public isMailConfirmed!: boolean
 
-  @Prop({ type: String, default: 'profile.jpg', required: true })
+  @Prop({
+    type: String,
+    default: 'profile.jpg',
+    required: true
+  })
   public avatar!: string
 }
 
