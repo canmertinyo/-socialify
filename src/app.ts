@@ -6,10 +6,10 @@ import morgan from 'morgan'
 import cors from 'cors'
 import compression from 'compression'
 
-import { config } from '@config/index'
-import { AppOptions } from '@common/interfaces'
-import { loadControllersBySuffix } from '@common/utils'
-import { errorHandler } from '@common/middlewares'
+import { AppOptions } from './common/interfaces'
+import { config } from './config'
+import { loadControllersBySuffix } from './common/utils'
+import { errorHandler } from './common/middlewares'
 
 export class App {
   private app: Application

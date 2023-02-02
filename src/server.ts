@@ -1,5 +1,4 @@
-import { config } from '@config/index'
-
+import { config } from './config'
 import { App } from './app'
 
 async function bootstrap(): Promise<void> {

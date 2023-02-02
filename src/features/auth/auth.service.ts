@@ -1,6 +1,6 @@
 import { Injectable } from 'magnodi'
 
-import { UserRepository } from '@features/user/repositories'
+import { UserRepository } from '../user/repositories'
 
 @Injectable()
 export class AuthService {
